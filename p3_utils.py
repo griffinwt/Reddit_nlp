@@ -28,6 +28,9 @@ from bs4 import BeautifulSoup
 import time
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+import nltk
 
 def pipemaker(scaler, classifier):
     if scaler == 'cvec':
