@@ -31,6 +31,7 @@ from sklearn.naive_bayes import MultinomialNB
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
 import nltk
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 
 def pipemaker(scaler, classifier):
     if scaler == 'cvec':
@@ -41,19 +42,22 @@ def pipemaker(scaler, classifier):
         return 'Error. Please enter "cvec" or "tvec"'
     if classifier == 'nb':
         item2 = ('nb', MultinomialNB())
+    elif classifier == 'rf':   #added for model 10
+        item2 = ('rf', RandomForestClassifier())
     else:
-        return 'Error. Please enter "nb"'
+        return 'Error. Please enter "nb" or "rf".'
     return Pipeline([item1, item2])
 
 
 def set_params(scaler, max_feat_list, min_df_list, max_df_list, sw_list, ngram_list):
-    if scaler != 'cvec' and scaler != 'tvec':
-        return 'Please enter either cvec or tvec as the first item.'
-    pipe_params = {f'{scaler}__max_features': max_feat_list,
-              f'{scaler}__min_df': min_df_list,
-              f'{scaler}__max_df': max_df_list,
-              f'{scaler}__stop_words': sw_list,
-              f'{scaler}__ngram_range': ngram_list}
+    if scaler == 'cvec' or scaler == 'tvec':
+        pipe_params = {f'{scaler}__max_features': max_feat_list,
+                  f'{scaler}__min_df': min_df_list,
+                  f'{scaler}__max_df': max_df_list,
+                  f'{scaler}__stop_words': sw_list,
+                  f'{scaler}__ngram_range': ngram_list}
+    else:
+        return "sorry, please use cvec or tvec"
     return pipe_params
 
 
