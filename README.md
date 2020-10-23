@@ -8,20 +8,20 @@
 
 ## Problem Statement
 
-As a data analyst for Microsoft, I have been tasked with exploring differences and similarities between r/Xbox and r/Playstation posts on Reddit, hopefully thereby futhering knowledge about what might be important amongst those posts' respective authors. In the course of my analysis I will build several classification models that distinguish between posts from each subreddit, however the goal is specifically to look at the differences between most recurring words in each subreddit to try to identify ways to market to Playstation subredditors and potentially win their business.
+As a data analyst for Microsoft, I have been tasked with exploring differences and similarities between r/Xbox and r/Playstation posts on Reddit, hopefully thereby futhering knowledge about what might be important amongst those posts' respective authors. In the course of my analysis I will build several classification models that distinguish between posts from each subreddit, however the goal is specifically to look at the differences between the most recurring words in each subreddit to try to identify ways to market to Playstation subredditors and potentially win their business when they are choosing their next console.
 
 ---
 
 ## Summary
 
-The [first step in my research](#https://git.generalassemb.ly/willg/project_3/blob/master/01_Data_Scraping.ipynb) was to collect reddit posts from each subreddit - my goal was 10,000 of each. I wrote a function in python to perform the scraping from pushshift.io and built in filters to ensure that I got posts which were:  
+The [first step in my research](#https://git.generalassemb.ly/willg/project_3/blob/master/notebooks/01_Data_Scraping.ipynb) was to collect reddit posts from each subreddit - my goal was 10,000 of each. I wrote a function in python to perform the scraping from pushshift.io and built in filters to ensure that I got posts which were:  
 1. text
-2. not removed
+2. not "removed" (deleted by author after posting)
 3. chronological  
 
 I also built in a random time delay between scrapes so that I did not overload pushshift's servers with requests. My function automatically ran on each subreddit, filtering posts as it went via the criteria listed above, until my number of posts met or exceeded 10,000. In total I collected 10,005 posts from r/Xbox and 10,021 posts from r/Playstation.
 
-My second task was [Cleaning and EDA](#https://git.generalassemb.ly/willg/project_3/blob/master/02_EDA.ipynb) - examining the data I had scraped and looking for errors, empty values, and patterns. In preparation for my NLP modeling, I combined the 'Title' and 'Selftext' string values into one concatenated column so that my model would have more words to search through.
+My second task was [Cleaning and EDA](#https://git.generalassemb.ly/willg/project_3/blob/master/notebooks/02_EDA.ipynb) - examining the data I had scraped and looking for errors, empty values, and patterns. In preparation for my NLP modeling, I combined the 'Title' and 'Selftext' string values into one concatenated column so that my model would have more words to search through.
 
 I also did some preliminary examination of words that were most common across both subreddits combined, as visualized in the bar chart below:
 
@@ -45,11 +45,13 @@ These are two bar charts of the most frequent words in the Playstation subreddit
 
 Note that 'account' appears in both the top 10 most frequent words overall AND features most prominently after other "playstation-adjacent" terminology has been removed. We could infer that r/Playstation users may discuss software or login/account issues frequently. Spoiler alert! This suspicion will be confirmed with modeling.
 
-After scraping and EDA, I moved into [Modeling](#)
+After scraping and EDA, I moved into [Modeling](#https://git.generalassemb.ly/willg/project_3/blob/master/notebooks/03_Modeling.ipynb) and tested several different scaler and classifier combinations to find the most accurate fit.
 
 This is a bar chart of the most frequent 10 words across all posts in my most accurate Count Vectorizer + Naive Bayes model:
 
 <img src="./images/m5_word_frequency.png" width="75%" height="75%">
+
+This model had fairly good accuracy, but low precision brought my F1 score down and overall accuracy was not as good as subsequent Random Forest or Logistic Regression models.
 
 This is a table of the most distinctive words between the two subreddit as scored by my Random Forest model. Unsurprisingly, they are words we would distinctly associate with these respective brands. This makes for a strong (over 92% accuracy model), however it does not tell us much more than we might have intuitively surmised.
 
@@ -135,3 +137,4 @@ With more time and resources, I would be interested in pursuing:
 ---
 
 ### External Resources
+https://pushshift.io/
