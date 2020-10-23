@@ -86,7 +86,7 @@ Similaraly, my final production model which used Logistic Regression also found 
 
 This table lists the largest coefficients (sorted by absolute value) so we include the largest positive and negative values. The center column displays the exponentiated coefficients, allowing us to say, for example, that with all other things held constant, the presence of the word "playstation" in a post makes it 14 times more likely to be from the Playstation subreddit. Empirical... if somewhat elementary. These words give us a strong model and therefore have use, but for true takeaways I needed to dig deeper.
 
-More interestingly - here is a table of the strongest postitive coefficients *after custom stop word removal*, i.e. taking out words that we would expect to find in only one subreddit or the other. This is from my final production model which used a Count Vectorizer in conjunction with Logistic Regression:
+In conclusion - here is a table of the strongest postitive coefficients *after custom stop word removal*, i.e. taking out words that we would expect to find in only one subreddit or the other. This is from my [final production model](#https://git.generalassemb.ly/willg/project_3/blob/master/notebooks/04_Production.ipynb) which used a Count Vectorizer in conjunction with Logistic Regression:
 
 | ngram (1,2) |     coef |   exp_coefs |   coef_abs |
 |:------------|---------:|------------:|-----------:|
