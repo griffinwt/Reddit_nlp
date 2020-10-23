@@ -51,7 +51,7 @@ This is a bar chart of the most frequent 10 words across all posts in my most ac
 
 <img src="./images/m5_word_frequency.png" width="75%" height="75%">
 
-This model had fairly good accuracy, but low precision brought my F1 score down and overall accuracy was not as good as subsequent Random Forest or Logistic Regression models.
+As the chart shows, posts from both subreddits share words like 'play', 'game' and 'anyone'. Not surprisingly, 'xbox' and 'ps4' are also prominent. This model had fairly good accuracy, but low precision brought my F1 score down and overall accuracy was not as good as subsequent Random Forest or Logistic Regression models.
 
 This is a table of the most distinctive words between the two subreddit as scored by my Random Forest model. Unsurprisingly, they are words we would distinctly associate with these respective brands. This makes for a strong (over 92% accuracy model), however it does not tell us much more than we might have intuitively surmised.
 
@@ -104,7 +104,7 @@ In conclusion - here is a table of the strongest postitive coefficients *after c
 After extensively removing unique identifying words from the model, here are the 10 strongest postitive coefficients (meaning they are most indicative of our "1" which is r/playstation). If I were to generally categorize these words, I would group them as:  
 - Playstation exclusive games like Last (of) Us, Fall Guys (others were added to the stop word list to dig deeper)
 - Account / security concerns i.e. banned, hacked, wallet, safe mode, network, database
-- Highly anticipated features i.e. remote play and 3d  
+- Highly anticipated features i.e. remote play and 3D  
 
 Based on my analysis, I would recommend that any marketing efforts aimed at winning over former playstation users focus on Microsoft's answers to these concerns. Specifically, marketing referring to upcoming special Xbox-only games, ease of use and/or security of the Xbox account and online systems, and cutting edge advancements in online and remote play.
 
@@ -138,3 +138,5 @@ With more time and resources, I would be interested in pursuing:
 
 ### External Resources
 https://pushshift.io/
+https://www.tomsguide.com/face-off/ps5-vs-xbox-series-x
+https://imgflip.com/i/3b4s9h
