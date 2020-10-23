@@ -44,8 +44,10 @@ def pipemaker(scaler, classifier):
         item2 = ('nb', MultinomialNB())
     elif classifier == 'rf':   #added for model 10
         item2 = ('rf', RandomForestClassifier())
+    elif classifier == 'logreg':#updated for model 12
+        item2 = ('logreg', LogisticRegression())
     else:
-        return 'Error. Please enter "nb" or "rf".'
+        return 'Error.'
     return Pipeline([item1, item2])
 
 

@@ -1,167 +1,137 @@
-# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Project 3: Web APIs & NLP
-
-### Description
-
-In week four we've learned about a few different classifiers. In week five we'll learn about webscraping, APIs, and Natural Language Processing (NLP). This project will put those skills to the test.
-
-For project 3, your goal is two-fold:
-1. Using [Pushshift's](https://github.com/pushshift/api) API, you'll collect posts from two subreddits of your choosing.
-2. You'll then use NLP to train a classifier on which subreddit a given post came from. This is a binary classification problem.
-
-
-#### About the API
-
-Pushshift's API is fairly straightforward. For example, if I want the posts from [`/r/boardgames`](https://www.reddit.com/r/boardgames), all I have to do is use the following url: https://api.pushshift.io/reddit/search/submission?subreddit=boardgames
-
-To help you get started, we have a primer video on how to use the API: https://youtu.be/AcrjEWsMi_E
-
-**NOTE:** Pushshift now limits you to 100 posts per request (no longer the 500 in the screencast).
+- [Problem Statement](#Problem-Statement)
+- [Summary](#Summary)
+- [Next Steps](#Next-Steps)
+- [Data Dictionary](#Data-Dictionary)
+- [External Resources](#External-Resources)
 
 ---
 
-### Requirements
+## Problem Statement
 
-- Gather and prepare your data using the `requests` library.
-- **Create and compare two models**. One of these must be a Random Forest classifier, however the other can be a classifier of your choosing: logistic regression, KNN, SVM, etc.
-- A Jupyter Notebook with your analysis for a peer audience of data scientists.
-- An executive summary of your results.
-- A short presentation outlining your process and findings for a semi-technical audience.
-
-**Pro Tip:** You can find a good example executive summary [here](https://www.proposify.biz/blog/executive-summary).
+As a data analyst for Microsoft, I have been tasked with exploring differences and similarities between r/Xbox and r/Playstation posts on Reddit, hopefully thereby futhering knowledge about what might be important amongst those posts' respective authors. In the course of my analysis I will build several classification models that distinguish between posts from each subreddit, however the goal is specifically to look at the differences between most recurring words in each subreddit to try to identify ways to market to Playstation subredditors and potentially win their business.
 
 ---
 
-### Necessary Deliverables / Submission
+## Summary
 
-- Code and executive summary must be in a clearly commented Jupyter Notebook.
-- You must submit your slide deck.
-- Materials must be submitted by **10:00 AM on Friday, October 23rd**.
+The [first step in my research](#https://git.generalassemb.ly/willg/project_3/blob/master/01_Data_Scraping.ipynb) was to collect reddit posts from each subreddit - my goal was 10,000 of each. I wrote a function in python to perform the scraping from pushshift.io and built in filters to ensure that I got posts which were:  
+1. text
+2. not removed
+3. chronological  
 
----
+I also built in a random time delay between scrapes so that I did not overload pushshift's servers with requests. My function automatically ran on each subreddit, filtering posts as it went via the criteria listed above, until my number of posts met or exceeded 10,000. In total I collected 10,005 posts from r/Xbox and 10,021 posts from r/Playstation.
 
-## Rubric
-Your local instructor will evaluate your project (for the most part) using the following criteria.  You should make sure that you consider and/or follow most if not all of the considerations/recommendations outlined below **while** working through your project.
+My second task was [Cleaning and EDA](#https://git.generalassemb.ly/willg/project_3/blob/master/02_EDA.ipynb) - examining the data I had scraped and looking for errors, empty values, and patterns. In preparation for my NLP modeling, I combined the 'Title' and 'Selftext' string values into one concatenated column so that my model would have more words to search through.
 
-For Project 3 the evaluation categories are as follows:<br>
-**The Data Science Process**
-- Problem Statement
-- Data Collection
-- Data Cleaning & EDA
-- Preprocessing & Modeling
-- Evaluation and Conceptual Understanding
-- Conclusion and Recommendations
+I also did some preliminary examination of words that were most common across both subreddits combined, as visualized in the bar chart below:
 
-**Organization and Professionalism**
-- Organization
-- Visualizations
-- Python Syntax and Control Flow
-- Presentation
+<img src="./images/mfw_both.png" width="75%" height="75%">
 
-**Scores will be out of 30 points based on the 10 categories in the rubric.** <br>
-*3 points per section*<br>
+We can see that the words we might expect to appear relative to the subject matter are indeed present, including 'ps4', 'ps5', and 'xbox', as well as common video game vocabulary like 'account' and 'play'. By far the most frequent word was "xbox", and many xbox subredditors used it more than once per post!
 
-| Score | Interpretation |
-| --- | --- |
-| **0** | *Project fails to meet the minimum requirements for this item.* |
-| **1** | *Project meets the minimum requirements for this item, but falls significantly short of portfolio-ready expectations.* |
-| **2** | *Project exceeds the minimum requirements for this item, but falls short of portfolio-ready expectations.* |
-| **3** | *Project meets or exceeds portfolio-ready expectations; demonstrates a thorough understanding of every outlined consideration.* |
+I did similar analysis for each of the subreddits individually. Here are two bar charts of the most frequent words in the Xbox subreddit - before and after custom stop word removal:
 
+<img src="./images/mfw_xbox.png" width="75%" height="75%">
 
-### The Data Science Process
+<img src="./images/mfw_xbox2.png" width="75%" height="75%">
 
-**Problem Statement**
-- Is it clear what the goal of the project is?
-- What type of model will be developed?
-- How will success be evaluated?
-- Is the scope of the project appropriate?
-- Is it clear who cares about this or why this is important to investigate?
-- Does the student consider the audience and the primary and secondary stakeholders?
+We can see that the words 'console' and 'controller' appear in the top 10 overall and after we remove other "xbox-specific" terms they become the most frequent representatives from their subreddit. This suggests that many of the authors in r/Xbox are inquiring / troublshooting with regards to hardware on a regular basis.
 
-**Data Collection**
-- Was enough data gathered to generate a significant result?
-- Was data collected that was useful and relevant to the project?
-- Was data collection and storage optimized through custom functions, pipelines, and/or automation?
-- Was thought given to the server receiving the requests such as considering number of requests per second?
+These are two bar charts of the most frequent words in the Playstation subreddit - before and after custom stop word removal:
 
-**Data Cleaning and EDA**
-- Are missing values imputed/handled appropriately?
-- Are distributions examined and described?
-- Are outliers identified and addressed?
-- Are appropriate summary statistics provided?
-- Are steps taken during data cleaning and EDA framed appropriately?
-- Does the student address whether or not they are likely to be able to answer their problem statement with the provided data given what they've discovered during EDA?
+<img src="./images/mfw_ps.png" width="75%" height="75%">
 
-**Preprocessing and Modeling**
-- Is text data successfully converted to a matrix representation?
-- Are methods such as stop words, stemming, and lemmatization explored?
-- Does the student properly split and/or sample the data for validation/training purposes?
-- Does the student test and evaluate a variety of models to identify a production algorithm (**AT MINIMUM:** Bayes and one other model)?
-- Does the student defend their choice of production model relevant to the data at hand and the problem?
-- Does the student explain how the model works and evaluate its performance successes/downfalls?
+<img src="./images/mfw_ps2.png" width="75%" height="75%">
 
-**Evaluation and Conceptual Understanding**
-- Does the student accurately identify and explain the baseline score?
-- Does the student select and use metrics relevant to the problem objective?
-- Does the student interpret the results of their model for purposes of inference?
-- Is domain knowledge demonstrated when interpreting results?
-- Does the student provide appropriate interpretation with regards to descriptive and inferential statistics?
+Note that 'account' appears in both the top 10 most frequent words overall AND features most prominently after other "playstation-adjacent" terminology has been removed. We could infer that r/Playstation users may discuss software or login/account issues frequently. Spoiler alert! This suspicion will be confirmed with modeling.
 
-**Conclusion and Recommendations**
-- Does the student provide appropriate context to connect individual steps back to the overall project?
-- Is it clear how the final recommendations were reached?
-- Are the conclusions/recommendations clearly stated?
-- Does the conclusion answer the original problem statement?
-- Does the student address how findings of this research can be applied for the benefit of stakeholders?
-- Are future steps to move the project forward identified?
+After scraping and EDA, I moved into [Modeling](#)
+
+This is a bar chart of the most frequent 10 words across all posts in my most accurate Count Vectorizer + Naive Bayes model:
+
+<img src="./images/m5_word_frequency.png" width="75%" height="75%">
+
+This is a table of the most distinctive words between the two subreddit as scored by my Random Forest model. Unsurprisingly, they are words we would distinctly associate with these respective brands. This makes for a strong (over 92% accuracy model), however it does not tell us much more than we might have intuitively surmised.
 
 
-### Organization and Professionalism
+| ngram(1,2)  |   importance |
+|:------------|-------------:|
+| xbox        |    0.114827  |
+| ps4         |    0.0623533 |
+| playstation |    0.04113   |
+| ps5         |    0.0340841 |
+| series      |    0.0224452 |
+| xbox one    |    0.0168698 |
+| ps          |    0.0160656 |
+| sony        |    0.0120391 |
+| psn         |    0.0119337 |
+| microsoft   |    0.0117509 |
 
-**Project Organization**
-- Are modules imported correctly (using appropriate aliases)?
-- Are data imported/saved using relative paths?
-- Does the README provide a good executive summary of the project?
-- Is markdown formatting used appropriately to structure notebooks?
-- Are there an appropriate amount of comments to support the code?
-- Are files & directories organized correctly?
-- Are there unnecessary files included?
-- Do files and directories have well-structured, appropriate, consistent names?
+Similaraly, my final production model which used Logistic Regression also found that similar unique words are the best post differentiators:
 
-**Visualizations**
-- Are sufficient visualizations provided?
-- Do plots accurately demonstrate valid relationships?
-- Are plots labeled properly?
-- Are plots interpreted appropriately?
-- Are plots formatted and scaled appropriately for inclusion in a notebook-based technical report?
+| ngram (1,2) |     coef |   exp_coefs |   coef_abs |
+|:------------|---------:|------------:|-----------:|
+| playstation |  2.64269 |   14.0509   |    2.64269 |
+| ps5         |  2.47732 |   11.9094   |    2.47732 |
+| ps4         |  2.12555 |    8.37747  |    2.12555 |
+| xbox        | -2.03688 |    0.130436 |    2.03688 |
+| ps          |  1.88504 |    6.58661  |    1.88504 |
+| psn         |  1.69428 |    5.44274  |    1.69428 |
+| sony        |  1.46644 |    4.33377  |    1.46644 |
+| series      | -1.43306 |    0.238577 |    1.43306 |
+| ps3         |  1.19648 |    3.30845  |    1.19648 |
+| dualshock   |  1.00245 |    2.72495  |    1.00245 |
 
-**Python Syntax and Control Flow**
-- Is care taken to write human readable code?
-- Is the code syntactically correct (no runtime errors)?
-- Does the code generate desired results (logically correct)?
-- Does the code follows general best practices and style guidelines?
-- Are Pandas functions used appropriately?
-- Are `sklearn` and `NLTK` methods used appropriately?
+This table lists the largest coefficients (sorted by absolute value) so we include the largest positive and negative values. The center column displays the exponentiated coefficients, allowing us to say, for example, that with all other things held constant, the presence of the word "playstation" in a post makes it 14 times more likely to be from the Playstation subreddit. Empirical... if somewhat elementary. These words give us a strong model and therefore have use, but for true takeaways I needed to dig deeper.
 
-**Presentation**
-- Is the problem statement clearly presented?
-- Does a strong narrative run through the presentation building toward a final conclusion?
-- Are the conclusions/recommendations clearly stated?
-- Is the level of technicality appropriate for the intended audience?
-- Is the student substantially over or under time?
-- Does the student appropriately pace their presentation?
-- Does the student deliver their message with clarity and volume?
-- Are appropriate visualizations generated for the intended audience?
-- Are visualizations necessary and useful for supporting conclusions/explaining findings?
+More interestingly - here is a table of the strongest postitive coefficients *after custom stop word removal*, i.e. taking out words that we would expect to find in only one subreddit or the other. This is from my final production model which used a Count Vectorizer in conjunction with Logistic Regression:
+
+| ngram (1,2) |     coef |   exp_coefs |   coef_abs |
+|:------------|---------:|------------:|-----------:|
+| last us     | 0.891795 |     2.4395  |   0.891795 |
+| remote play | 0.874625 |     2.39798 |   0.874625 |
+| banned      | 0.694134 |     2.00197 |   0.694134 |
+| hacked      | 0.681458 |     1.97676 |   0.681458 |
+| fall guys   | 0.670572 |     1.95535 |   0.670572 |
+| wallet      | 0.665569 |     1.9456  |   0.665569 |
+| safe mode   | 0.654261 |     1.92372 |   0.654261 |
+| database    | 0.614393 |     1.84853 |   0.614393 |
+| 3d          | 0.58513  |     1.79522 |   0.58513  |
+| network     | 0.582289 |     1.79013 |   0.582289 |
+
+After extensively removing unique identifying words from the model, here are the 10 strongest postitive coefficients (meaning they are most indicative of our "1" which is r/playstation). If I were to generally categorize these words, I would group them as:  
+- Playstation exclusive games like Last (of) Us, Fall Guys (others were added to the stop word list to dig deeper)
+- Account / security concerns i.e. banned, hacked, wallet, safe mode, network, database
+- Highly anticipated features i.e. remote play and 3d  
+
+Based on my analysis, I would recommend that any marketing efforts aimed at winning over former playstation users focus on Microsoft's answers to these concerns. Specifically, marketing referring to upcoming special Xbox-only games, ease of use and/or security of the Xbox account and online systems, and cutting edge advancements in online and remote play.
 
 
 ---
 
-### Why did we choose this project for you?
-This project covers three of the biggest concepts we cover in the class: Classification Modeling, Natural Language Processing and Data Wrangling/Acquisition.
+### Next Steps
 
-Part 1 of the project focuses on **Data wrangling/gathering/acquisition**. This is a very important skill as not all the data you will need will be in clean CSVs or a single table in SQL.  There is a good chance that wherever you land you will have to gather some data from some unstructured/semi-structured sources; when possible, requesting information from an API, but often scraping it because they don't have an API (or it's terribly documented).
+With more time and resources, I would be interested in pursuing:  
+- deeper evaluation of posts by authors that appear in both subreddits; my preliminary EDA found 183 unique authors that showed up in both r/xbox and r/playstation
+- further sentiment analysis; I found average sentiment to be slightly positive (~.27) but I could look deeper into words associated with negative and positive posts, and try to find the range of sentiment for each subreddit
+- focused analysis on the Xbox subreddit to better identify their authors' heartburns and hot buttons
 
-Part 2 of the project focuses on **Natural Language Processing** and converting standard text data (like Titles and Comments) into a format that allows us to analyze it and use it in modeling.
+---
 
-Part 3 of the project focuses on **Classification Modeling**.  Given that project 2 was a regression focused problem, we needed to give you a classification focused problem to practice the various models, means of assessment and preprocessing associated with classification.   
+### Data Dictionary
+
+|Feature|Type|Description|
+|---|---|---|
+|**subreddit**|str|Subreddit that post came from|
+|**id**|str|Unique post ID|
+|**author**|str|Reddit username of poster|
+|**num_comments**|int|Number of comments post received|
+|**selftext**|str|Optional subtitle area for additional post title text|
+|**title**|str|Title of post|
+|**upvote_ratio**|float|Ratio of upvotes on post|
+|**url**|str|Web address of post|
+|**all_text**|str|Concatenation of selftext and title features; used as X for NLP model|
+
+---
+
+### External Resources
