@@ -8,7 +8,7 @@
 
 ## Problem Statement
 
-As a data analyst for Microsoft, I have been tasked with exploring differences and similarities between r/Xbox and r/Playstation posts on Reddit, hopefully thereby futhering knowledge about what might be important amongst those posts' respective authors. In the course of my analysis I will build several classification models that distinguish between posts from each subreddit, however the goal is specifically to look at the differences between the most commonly occurring words in each subreddit to try to identify ways to market to Playstation subredditors and potentially win their business when they are choosing their next console.
+As a data analyst for Microsoft, I have been tasked with exploring differences and similarities between r/Xbox and r/Playstation posts on Reddit, hopefully thereby furthering knowledge about what might be important amongst those posts' respective authors. In the course of my analysis I will build several classification models that distinguish between posts from each subreddit, however the goal is specifically to look at the differences between the most commonly occurring words in each subreddit to try to identify ways to market to Playstation subredditors and potentially win their business when they are choosing their next console.
 
 ---
 
@@ -53,7 +53,7 @@ This is a bar chart of the most frequent 10 words across all posts in my most ac
 
 As the chart shows, posts from both subreddits share words like 'play', 'game' and 'anyone'. Not surprisingly, 'xbox' and 'ps4' are also prominent. This model had fairly good accuracy, but low precision brought my F1 score down and overall accuracy was not as good as subsequent Random Forest or Logistic Regression models.
 
-This is a table of the most distinctive words between the two subreddit as scored by my Random Forest model. Unsurprisingly, they are words we would distinctly associate with these respective brands. This makes for a strong (over 92% accuracy model), however it does not tell us much more than we might have intuitively surmised.
+This is a table of the most distinctive words between the two subreddits as scored by my Random Forest model. Unsurprisingly, they are words we would distinctly associate with these respective brands. This makes for a strong (over 92% accuracy model), however it does not tell us much more than we might have intuitively surmised.
 
 
 | ngram(1,2)  |   importance |
@@ -137,6 +137,6 @@ With more time and resources, I would be interested in pursuing:
 ---
 
 ### External Resources
-https://pushshift.io/
-https://www.tomsguide.com/face-off/ps5-vs-xbox-series-x
-https://imgflip.com/i/3b4s9h
+https://pushshift.io/  
+https://www.tomsguide.com/face-off/ps5-vs-xbox-series-x  
+https://imgflip.com/i/3b4s9h  
